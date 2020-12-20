@@ -7,6 +7,7 @@ version = "0.1.0"
 authors = ["Phoebe Goldman <phoebe@goldman-tribe.org>"]
 license = "MIT"
 edition = "2018"
+keywords = ["continuation", "exception", "control_flow"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
