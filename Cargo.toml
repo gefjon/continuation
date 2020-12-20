@@ -1,0 +1,9 @@
+[package]
+name = "callec"
+version = "0.1.0"
+authors = ["Phoebe Goldman <phoebe@goldman-tribe.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
