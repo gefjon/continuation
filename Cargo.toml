@@ -1,5 +1,5 @@
 [package]
-name = "callec"
+name = "continuation"
 version = "0.1.0"
 authors = ["Phoebe Goldman <phoebe@goldman-tribe.org>"]
 edition = "2018"

@@ -15,6 +15,35 @@ impl Token {
     }
 }
 
+/// Mimic the behavior of c's `setjmp`/`longjmp`.
+///
+/// Invokes `body` with two arguments: a payload and a repeat-continuation.
+///
+/// If `body` returns normally, `call_with_repeat_continuation`
+/// returns its value.
+///
+/// The repeat continuation is a function of one argument which never
+/// returns. When invoked, the repeat continuation causes `body` to be
+/// re-invoked using the repeat continuation's argument as a new
+/// payload.
+///
+/// For example, the following will print the numbers `1..=10`, then return `10`:
+///
+/// ```
+/// # use continuation::call_with_repeat_continuation;
+/// # let ten =
+/// call_with_repeat_continuation(
+///   0,
+///   |i, repeat| {
+///     println!("{}", i);
+///     if i == 10 { i } else { repeat(i + 1) }
+///   },
+/// )
+/// # ;
+/// # assert_eq!(ten, 10);
+/// ```
+///
+/// No convention is imposed as to the name of the repeat continuation.
 pub fn call_with_repeat_continuation<Return, Payload, Body>(
     initial_payload: Payload,
     mut body: Body,
@@ -48,6 +77,46 @@ where
     }
 }
 
+/// Mimic C++'s exceptions locally.
+///
+/// Invokes `body` with one argument, an escape continuation.
+///
+/// If `body` returns normally, `call_with_escape_continuation`
+/// returns that value wrapped in `Ok`.
+///
+/// The escape continuation is a function of one argument which never
+/// returns. If the escape continuation is invoked,
+/// `call_with_escape_continuation` will return its argument wrapped
+/// in `Err`.
+///
+/// For example, the following expression returns `Ok(10)`:
+///
+/// ```
+/// # use continuation::call_with_escape_continuation;
+/// # let res =
+/// call_with_escape_continuation(
+///   |throw| if true { 5 + 5 } else { throw("unreachable") },
+/// )
+/// # ;
+/// # assert_eq!(res, Ok(10));
+/// ```
+///
+/// Whereas this expression returns `Err(10)`:
+/// ```
+/// # use continuation::call_with_escape_continuation;
+/// # let res =
+/// call_with_escape_continuation(
+///   |throw| if false { "unreachable" } else { throw(20 - 10) },
+/// )
+/// # ;
+/// # assert_eq!(res, Err(10));
+/// ```
+///
+/// By convention, the escape continuation should be named `throw`, or
+/// some variation thereof. Contexts with multiple nested
+/// `call_with_escape_continuation` should each name their escape
+/// continuations `throw_foo`, where `foo` describes the exceptional
+/// situation; e.g. `throw_io_error`, `throw_thread_panicked`, etc.
 pub fn call_with_escape_continuation<T, E, Body>(
     body: Body,
 ) -> Result<T, E>
