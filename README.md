@@ -13,3 +13,10 @@ of `std` and `panic = "unwind"`, it is, by using `catch_panic` and `resume_panic
 `panic` mechanism is likely to be wildly inefficient compared to exceptions in languages
 like C++ or Java. As a result, this crate is not suitable for high-performance use, and is
 frankly not useful for anything in particular. It's kinda cool, though.
+
+## License
+
+This code is released under the MIT license, as it appears in [LICENSE.md](./LICENSE.md)
+or at [the Open Source Initiative](https://opensource.org/licenses/MIT). In my mind, that
+means I don't care what you do with the code and that I don't have any obligation to
+support you in so doing. That said, if you do something cool, I'd love to hear about it!
